@@ -27,4 +27,19 @@ public class InvoiceController {
         return invoiceService.createInvoice(cartItems);
     }
 
+    @GetMapping("/invoices")
+    public List<Invoice> getInvoiceQueue() {
+        return invoiceService.getInvoiceQueue();
+    }
+
+    @PutMapping("/invoices/{id}/transmit")
+    public Invoice transmitInvoice(@PathVariable String id) {
+        try {
+            return invoiceService.simulateTransmission(id);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return null;
+        }
+    }
+
 }

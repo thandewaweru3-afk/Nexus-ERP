@@ -1,58 +1,63 @@
-// src/App.jsx
+// src/App.jsx (Final Integration)
 
 import React, { useState } from 'react';
 import SalesInvoicing from './components/SalesInvoicing';
-// Import ETimsPortal when you create it later
+import ETimsPortal from './components/ETimsPortal';
 
 function App() {
-    // State to hold the most recent invoice (for the success notification)
+    // New state to manage which component is visible
+    const [activeView, setActiveView] = useState('sales'); 
     const [lastInvoice, setLastInvoice] = useState(null);
-    // In a full ERP, you would manage activeView here (e.g., 'sales', 'etims')
 
     const handleInvoiceCreated = (invoice) => {
         setLastInvoice(invoice);
-        // Set a timeout to clear the notification after 5 seconds
         setTimeout(() => setLastInvoice(null), 5000); 
+        // Optional: Switch to the eTIMS portal after creating an invoice
+        // setActiveView('etims'); 
+    };
+
+    const renderContent = () => {
+        if (activeView === 'sales') {
+            return <SalesInvoicing onInvoiceCreated={handleInvoiceCreated} />;
+        }
+        if (activeView === 'etims') {
+            return <ETimsPortal />;
+        }
+        return <div>Select a view.</div>;
     };
 
     return (
-        // Global styling: light background, full height
         <div style={{ minHeight: '100vh', backgroundColor: '#f4f7f9', fontFamily: 'Arial, sans-serif' }}>
             
-            {/* Header: Dark Blue/Slate with Green Accent */}
-            <header style={{ 
-                padding: '20px', 
-                background: '#2c3e50', 
-                color: 'white', 
-                borderBottom: '3px solid #1abc9c' 
-            }}>
-                <h1 style={{ margin: 0, fontSize: '1.8em' }}>Nexus ERP - Sales & Invoicing</h1>
+            <header style={{ padding: '20px', background: '#2c3e50', color: 'white', borderBottom: '3px solid #1abc9c' }}>
+                <h1 style={{ margin: 0, fontSize: '1.8em' }}>Nexus ERP </h1>
+                
+                {/* Navigation Bar */}
+                <div style={{ marginTop: '10px' }}>
+                    <button 
+                        onClick={() => setActiveView('sales')}
+                        style={{ padding: '10px 15px', marginRight: '10px', backgroundColor: activeView === 'sales' ? '#1abc9c' : '#34495e', border: 'none', color: 'white', cursor: 'pointer' }}
+                    >
+                        Sales & Invoicing
+                    </button>
+                    <button 
+                        onClick={() => setActiveView('etims')}
+                        style={{ padding: '10px 15px', backgroundColor: activeView === 'etims' ? '#1abc9c' : '#34495e', border: 'none', color: 'white', cursor: 'pointer' }}
+                    >
+                        eTIMS Portal
+                    </button>
+                </div>
+
             </header>
             
-            {/* Main Content Area */}
-            <main style={{ 
-                padding: '20px 40px', 
-                overflow: 'auto' 
-            }}>
-                {/* Renders the core sales component */}
-                <SalesInvoicing onInvoiceCreated={handleInvoiceCreated} />
+            <main style={{ padding: '20px 40px', overflow: 'auto' }}>
+                {renderContent()}
             </main>
             
-            {/* Fixed Success Notification (Toast) */}
+            {/* Notification remains the same */}
             {lastInvoice && (
-                <div style={{ 
-                    padding: '15px 25px', 
-                    background: '#2ecc71', // Bright Success Green
-                    color: 'white', 
-                    position: 'fixed', 
-                    bottom: '20px', 
-                    right: '20px', 
-                    borderRadius: '5px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                    fontWeight: 'bold',
-                    zIndex: 100
-                }}>
-                    **Success:** New Invoice **#{lastInvoice.id.substring(0, 8)}** created. Ready for eTIMS fiscalization!
+                <div style={{ padding: '15px 25px', background: '#2ecc71', color: 'white', position: 'fixed', bottom: '20px', right: '20px', borderRadius: '5px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)', fontWeight: 'bold', zIndex: 100 }}>
+                    **Success:** New Invoice **#{lastInvoice.id.substring(0, 8)}** created.
                 </div>
             )}
         </div>

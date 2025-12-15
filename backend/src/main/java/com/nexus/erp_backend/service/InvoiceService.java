@@ -48,4 +48,30 @@ public class InvoiceService {
         return invoiceQueue;
     }
 
+    public Invoice simulateTransmission(String invoiceid) throws InterruptedException {
+        Invoice invoice = invoiceQueue.stream()
+                .filter(i -> i.getId().equals(invoiceid))
+                .findFirst()
+                .orElse(null);
+        if (invoice == null || !invoice.getStatus().equals("Pending")) {
+            System.err.println("Invoice not found or eligible for transmission.");
+            return null;
+        }
+
+        invoice.setStatus("Transmitting..");
+        System.out.println("Transmitting invoice " + invoice.getId().substring(0, 8) + "to simulate KRA OSCU...");
+
+        // Simulate transmission delay
+        Thread.sleep(3000);
+
+        // Simulate successful transmission
+        String newLabel = "KRA-REC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        invoice.setStatus("Verified");
+        invoice.setEtimsReceiptLabel(newLabel);
+
+        System.out.println("Transmission Succesful. KRA Receipt Label: " + newLabel);
+
+        return invoice;
+    }
+
 }
