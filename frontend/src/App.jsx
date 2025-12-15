@@ -1,5 +1,3 @@
-// src/App.jsx (Final Integration)
-
 import React, { useState } from 'react';
 import SalesInvoicing from './components/SalesInvoicing';
 import ETimsPortal from './components/ETimsPortal';
