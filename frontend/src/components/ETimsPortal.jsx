@@ -81,7 +81,8 @@ const ETimsPortal = () => {
                             justifyContent: 'space-between', 
                             alignItems: 'center', 
                             padding: '15px', 
-                            borderBottom: '1px solid #f4f4f4' 
+                            borderBottom: '1px solid #f4f4f4',
+                            color: '#070707'
                         }}>
                             
                             {/* Invoice Details */}

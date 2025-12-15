@@ -41,5 +41,15 @@ public class InvoiceController {
             return null;
         }
     }
+    // Create a new item
+    @PostMapping("/inventory")
+    public Item addItem(@RequestBody Item newItem) {
+        return invoiceService.addItem(newItem);
+    }
+    // Update item details
+    @PutMapping("/inventory/{id}")
+    public Item updateItem(@PathVariable String id, @RequestBody Item updatedItem) {
+        return invoiceService.updateItem(id, updatedItem);
+    }
 
 }

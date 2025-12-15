@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SalesInvoicing from './components/SalesInvoicing';
 import ETimsPortal from './components/ETimsPortal';
+import InventoryManager from './components/InventoryManager';
 
 function App() {
     // New state to manage which component is visible
@@ -20,6 +21,9 @@ function App() {
         }
         if (activeView === 'etims') {
             return <ETimsPortal />;
+        }
+        if (activeView === 'inventory') {
+            return <InventoryManager />; 
         }
         return <div>Select a view.</div>;
     };
@@ -43,6 +47,12 @@ function App() {
                         style={{ padding: '10px 15px', backgroundColor: activeView === 'etims' ? '#1abc9c' : '#34495e', border: 'none', color: 'white', cursor: 'pointer' }}
                     >
                         eTIMS Portal
+                    </button>
+                    <button 
+                        onClick={() => setActiveView('inventory')}
+                        style={{ padding: '10px 15px', backgroundColor: activeView === 'inventory' ? '#1abc9c' : '#34495e', border: 'none', color: 'white', cursor: 'pointer' }}
+                    >
+                        Inventory Manager
                     </button>
                 </div>
 

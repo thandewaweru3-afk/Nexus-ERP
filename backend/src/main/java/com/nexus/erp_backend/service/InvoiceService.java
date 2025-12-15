@@ -11,11 +11,34 @@ import java.time.LocalDateTime;
 @Service
 public class InvoiceService {
     // Mock Inventory Database (In a real app, this would use JPA/Repository)
-    private final List<Item> inventory = List.of(
+    private final List<Item> inventory = new ArrayList<> (List.of(
     new Item("ITM-001", "Laptop", 1000.0, 0.16, 10),
     new Item("ITM-002", "Smartphone", 500.0, 0.16, 20),
     new Item("ITM-003", "Tablet", 300.0, 0.16, 15)
-    );
+    ));
+
+    public Item addItem(Item newItem) {
+        if (newItem.getId() == null || newItem.getId().isEmpty()) {
+            newItem.setId("INV-" + UUID.randomUUID().toString().substring(0, 4).toUpperCase());
+        }
+        inventory.add(newItem);
+        return newItem;
+    }
+
+    public Item updateItem(String id, Item updatedItem) {
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i).getId().equals(id)) {
+                Item currentItem = inventory.get(i);
+                currentItem.setName(updatedItem.getName());
+                currentItem.setPrice(updatedItem.getPrice());
+                currentItem.setStock(updatedItem.getStock());
+                currentItem.setTaxRate(updatedItem.getTaxRate());
+                return currentItem;
+            }
+        }
+        // if not found, return null or throw exception
+        return null;
+    }
 
     private final List<Invoice> invoiceQueue =  new ArrayList<>();
 
